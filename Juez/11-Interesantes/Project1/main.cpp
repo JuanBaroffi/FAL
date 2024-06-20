@@ -14,41 +14,61 @@ ANALISIS DE LA COMPLEJIDAD:
 -- Escribe y resuelve las ecuaciones de recurrencia.
 
 */
-
-bool es_interesante_aux(int n, int& dr, int& iz) {
-	int ev = (n / 10);
-
-	if (ev == 0)
+//
+//bool es_interesante_aux(int n, int& dr, int& iz) {
+//	int ev = (n / 10);
+//
+//	if (ev == 0)
+//	{
+//		iz = n;
+//		return true;
+//	}
+//	else {
+//		int element = n % 10;
+//		dr += element;
+//		if (es_interesante_aux(n / 10, dr, iz) && element != 0)
+//		{
+//			if ((dr % element == 0) && (iz % element == 0))
+//			{
+//				iz += element;
+//				dr -= element;
+//				return true;
+//			}
+//			else {
+//				return false;
+//			}
+//		}
+//		else {
+//			return false;
+//		}
+//	}
+//}
+bool es_interesante_aux(unsigned int n, int& sumaDerecha, int& sumaIzquierda) {
+	int numero = n % 10;
+	if (numero == 0)
 	{
-		iz = n;
-		return true;
+		return false;
+	}
+	else if ((n / 10) == 0)
+	{
+		sumaIzquierda += numero;
+		return (numero != 0) && (sumaDerecha % numero == 0);
 	}
 	else {
-		int element = n % 10;
-		dr += element;
-		if (es_interesante_aux(n / 10, dr, iz) && element != 0)
-		{
-			if ((dr % element == 0) && (iz % element == 0))
-			{
-				iz += element;
-				dr -= element;
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-		else {
-			return false;
-		}
+		sumaDerecha += numero;
+		bool aux = (es_interesante_aux((n / 10), sumaDerecha, sumaIzquierda));
+		sumaDerecha -= numero;
+		bool condSumaIzq = (sumaIzquierda % numero == 0);
+		sumaIzquierda += numero;
+		return (numero != 0) && (sumaDerecha % numero == 0) && condSumaIzq && aux;
 	}
 }
 
 bool es_interesante(unsigned int n) {
 	// A IMPLEMENTAR
-	int dr = 0;
-	int iz = 0;
-	return es_interesante_aux(n, dr, iz);
+	int sumaDerecha = 0;
+	int sumaIzquierda = 0;
+	return es_interesante_aux(n, sumaDerecha, sumaIzquierda);
 }
 
 void ejecuta_caso() {
